@@ -1,0 +1,62 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+# Excludes all .tfvars files (keep .example versions)
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfplan
+*.tfplan.*
+
+# Keep example files (negating above rules)
+!*.tfvars.example
+
+# Sensitive files
+*.pem
+*.key
+*.cert
+credentials.json
+secrets.json
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+*~
+._*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+
+# Project-specific
+# State backups from migration
+pre-migration-state.json
+hcp-state.tfstate
+deployed-resources.json

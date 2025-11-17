@@ -1,0 +1,23 @@
+# ============================================
+# EC2 Outputs
+# ============================================
+
+output "instance_id" {
+  description = "ID of the EC2 instance"
+  value       = aws_instance.demo.id
+}
+
+output "instance_public_ip" {
+  description = "Public IP of the EC2 instance"
+  value       = aws_instance.demo.public_ip
+}
+
+output "instance_private_ip" {
+  description = "Private IP of the EC2 instance"
+  value       = aws_instance.demo.private_ip
+}
+
+output "instance_arn" {
+  description = "ARN of the EC2 instance"
+  value       = aws_instance.demo.arn
+}

@@ -1,0 +1,100 @@
+# ============================================
+# HCP Terraform Configuration
+# ============================================
+# Copy this file to terraform.tfvars and fill in your values
+# NEVER commit terraform.tfvars to version control!
+
+# HCP Terraform organization name (required)
+tfe_organization = "your-org-name"
+
+# HCP Terraform hostname (default: app.terraform.io)
+# Change this if using Terraform Enterprise
+# tfe_hostname = "app.terraform.io"
+
+# ============================================
+# Workspace Settings
+# ============================================
+
+# Workspace name
+workspace_name = "resource-discovery"
+
+# Workspace description
+workspace_description = "Workspace for discovering and importing unmanaged cloud resources"
+
+# Terraform version (must be 1.14.0-rc2 or newer)
+terraform_version = "1.14.0-rc2"
+
+# Execution mode: remote, local, or agent
+execution_mode = "remote"
+
+# Auto-apply changes (default: false for safety)
+auto_apply = false
+
+# ============================================
+# VCS Configuration (Optional)
+# ============================================
+# Uncomment if using VCS-driven workflow
+
+# vcs_repo_identifier = "your-github-org/your-repo-name"
+# vcs_oauth_token_id  = "ot-xxxxxxxxxxxxx"
+# vcs_branch          = "main"
+# working_directory   = ""
+
+# ============================================
+# Agent Pool (Optional)
+# ============================================
+# Uncomment if using agent execution mode
+
+# agent_pool_id = "apool-xxxxxxxxxxxxx"
+
+# ============================================
+# AWS Configuration
+# ============================================
+# Uncomment and fill in if discovering AWS resources
+
+# aws_access_key_id     = "AKIAIOSFODNN7EXAMPLE"
+# aws_secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+# aws_session_token     = "temporary-session-token-if-using-assume-role"
+# aws_region            = "us-west-2"
+
+# ============================================
+# Azure Configuration
+# ============================================
+# Uncomment and fill in if discovering Azure resources
+
+# azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+# azure_client_id       = "00000000-0000-0000-0000-000000000000"
+# azure_client_secret   = "your-client-secret"
+# azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
+
+# ============================================
+# GCP Configuration
+# ============================================
+# Uncomment and fill in if discovering GCP resources
+
+# gcp_project_id  = "your-project-id"
+# gcp_credentials = <<-EOT
+# {
+#   "type": "service_account",
+#   "project_id": "your-project-id",
+#   "private_key_id": "...",
+#   "private_key": "...",
+#   "client_email": "...",
+#   "client_id": "...",
+#   "auth_uri": "...",
+#   "token_uri": "...",
+#   "auth_provider_x509_cert_url": "...",
+#   "client_x509_cert_url": "..."
+# }
+# EOT
+
+# ============================================
+# Workspace Tags
+# ============================================
+
+workspace_tags = [
+  "search",
+  "import",
+  "discovery",
+  "migration"
+]
