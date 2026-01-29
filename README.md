@@ -26,8 +26,15 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 - Git
 - Go 1.19+ (for Phase 3)
 
-**AWS Beta Limitation**:
-- Only supports: `aws_instance`, `aws_iam_role`, `aws_cloudwatch_log_group`
+**Supported AWS Resources** (as of Provider 6.29+):
+- Compute: `aws_instance`
+- Networking: `aws_vpc`, `aws_subnet`, `aws_security_group`
+- IAM: `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy_attachment`
+- Storage: `aws_s3_bucket`
+- KMS: `aws_kms_key`, `aws_kms_alias`
+- Messaging: `aws_sqs_queue`
+- SSM: `aws_ssm_parameter`
+- Monitoring: `aws_cloudwatch_log_group`
 
 ---
 
