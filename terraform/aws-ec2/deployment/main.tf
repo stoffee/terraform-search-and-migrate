@@ -2,23 +2,16 @@
 # Simple EC2 Instance (no module - simpler!)
 # ============================================
 
-data "aws_ami" "amazon_linux_2023" {
-  most_recent = true
-  owners      = ["amazon"]
+# HC-approved base AMI with EDR (HC-COMPUTE-011)
+module "base_ami" {
+  source = "git::ssh://git@github.com/stoffee/terraform-aws-hc-base-ami.git"
 
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-x86_64"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+  os_flavor    = "rhel-9"
+  architecture = "x86_64"
 }
 
 resource "aws_instance" "demo" {
-  ami           = data.aws_ami.amazon_linux_2023.id
+  ami           = module.base_ami.ami_id
   instance_type = var.instance_type
 
   tags = {
@@ -26,5 +19,9 @@ resource "aws_instance" "demo" {
     Environment = var.environment
     Project     = var.project_name
     ManagedBy   = "Terraform"
+    TTL         = "72"
+    NAME        = "cdunlap"
+    DEMO        = "terraform search and import"
+    CUSTOMER    = "tmobile"
   }
 }
