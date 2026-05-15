@@ -10,7 +10,6 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 - [Phase 1: Resource Discovery](#phase-1-resource-discovery)
 - [Phase 2: Import Resources](#phase-2-import-resources)
 - [Phase 3: Migrate to TFE](#phase-3-migrate-to-tfe)
-- [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -218,24 +217,6 @@ terraform init
 terraform state list  # Should show aws_instance.all_0
 terraform plan        # Should show no changes
 ```
-
----
-
-## Troubleshooting
-
-### Phase 1: No Resources Found
-```bash
-cd terraform/aws/deployment
-terraform output instance_id  # Verify instance exists
-```
-
-### Phase 2: Plan Shows Conflicts
-- Verify you removed ALL 9 conflicting attributes
-- Check `terraform/aws/discovery/README.md` for complete list
-
-### Phase 3: VCS Not Connected
-- Verify OAuth mapping in `~/.tfm.hcl`
-- Get correct token IDs from HCP Terraform and TFE VCS settings
 
 ---
 
