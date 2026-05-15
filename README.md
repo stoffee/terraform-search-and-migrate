@@ -34,17 +34,30 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 | Azure (`hashicorp/azurerm` 4.73+) | ✅ Growing support | Resource Group + Public IP discovery |
 | GCP (`hashicorp/google` 7.29+) | ⚠️ Early support | Service Account discovery |
 
-**AWS Resources** (as of Provider 6.37+):
-- Compute: `aws_instance`, `aws_lambda_function`, `aws_lambda_permission`
-- Networking: `aws_vpc`, `aws_subnet`, `aws_security_group`, `aws_lb`, `aws_lb_listener`, `aws_route`, `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule`
-- IAM: `aws_iam_role`, `aws_iam_user`, `aws_iam_policy`
-- Storage: `aws_s3_bucket`, `aws_s3_directory_bucket`, `aws_s3_bucket_versioning`
-- Secrets: `aws_secretsmanager_secret`
-- Messaging: `aws_sns_topic`, `aws_sqs_queue`
-- Monitoring: `aws_cloudwatch_log_group`
+**AWS Resources** (as of `hashicorp/aws` 6.45+):
+- Compute: `aws_instance`, `aws_ebs_volume`, `aws_lambda_function`, `aws_lambda_permission`, `aws_lambda_event_source_mapping`, `aws_eks_cluster`
+- Networking: `aws_vpc`, `aws_subnet`, `aws_internet_gateway`, `aws_nat_gateway`, `aws_eip`, `aws_route_table`, `aws_route`, `aws_security_group`, `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule`, `aws_vpc_endpoint`, `aws_vpc_endpoint_route_table_association`, `aws_lb`, `aws_lb_target_group`, `aws_lb_target_group_attachment`, `aws_lb_listener`, `aws_route53_zone`, `aws_cloudfront_distribution`
+- IAM: `aws_iam_role`, `aws_iam_user`, `aws_iam_policy`, `aws_iam_role_policy_attachment`, `aws_iam_user_policy_attachment`, `aws_iam_group_policy_attachment`, `aws_ssoadmin_account_assignment`
+- Storage: `aws_s3_bucket`, `aws_s3_directory_bucket`, `aws_s3_bucket_versioning`, `aws_s3_bucket_lifecycle_configuration`, `aws_s3_bucket_logging`, `aws_s3_bucket_ownership_controls`, `aws_s3files_file_system`, `aws_s3files_access_point`
+- Database: `aws_db_instance`, `aws_dynamodb_table`
+- Secrets & SSM: `aws_secretsmanager_secret`, `aws_ssm_document`, `aws_ssm_association`, `aws_ssm_patch_group`
+- Messaging: `aws_sns_topic`, `aws_sns_topic_policy`, `aws_sqs_queue`, `aws_sqs_queue_policy`, `aws_msk_cluster`
+- Monitoring: `aws_cloudwatch_log_group`, `aws_cloudwatch_metric_alarm`, `aws_cloudwatch_log_metric_filter`
+- Security: `aws_kms_key`, `aws_kms_alias`, `aws_config_config_rule`
+- API: `aws_apigatewayv2_api`
 
-**Azure Resources** (as of AzureRM 4.64+): 28 confirmed types including Resource Groups, Public IPs, App Gateways, Firewalls, Azure SQL, Redis, and more.
-- See: [docs/azure-01-search.md](docs/azure-01-search.md)
+**Azure Resources** (as of `hashicorp/azurerm` 4.73+):
+- Management: `azurerm_resource_group`
+- Networking: `azurerm_application_gateway`, `azurerm_application_security_group`, `azurerm_firewall`, `azurerm_firewall_policy`, `azurerm_firewall_policy_rule_collection_group`, `azurerm_ip_group`, `azurerm_nat_gateway`, `azurerm_network_security_rule`, `azurerm_public_ip`, `azurerm_web_application_firewall_policy`, `azurerm_network_ddos_protection_plan`, `azurerm_private_dns_a_record`, `azurerm_private_dns_cname_record`, `azurerm_private_endpoint`, `azurerm_route`, `azurerm_subnet`, `azurerm_traffic_manager_profile`
+- Database: `azurerm_mssql_server`, `azurerm_mssql_database`, `azurerm_mssql_elasticpool`, `azurerm_mssql_job_agent`, `azurerm_mssql_virtual_machine`, `azurerm_mysql_flexible_database`, `azurerm_mysql_flexible_server_configuration`, `azurerm_mysql_flexible_server_firewall_rule`
+- Cache: `azurerm_redis_cache`, `azurerm_redis_firewall_rule`
+- Storage: `azurerm_storage_account_customer_managed_key`, `azurerm_storage_sync`, `azurerm_storage_mover`, `azurerm_storage_mover_agent`, `azurerm_storage_mover_source_endpoint`, `azurerm_storage_mover_project`, `azurerm_storage_mover_job_definition`
+- Compute & App: `azurerm_service_plan`
+- AI & Cognitive: `azurerm_cognitive_account`, `azurerm_web_pubsub`, `azurerm_video_indexer_account`
+
+**GCP Resources** (as of `hashicorp/google` 7.29+):
+- IAM: `google_service_account`
+- More resource types expected as provider support matures
 
 ---
 
@@ -224,18 +237,20 @@ terraform plan        # Should show no changes
 
 ```
 docs/
-├── 01-search.md              # AWS Phase 1: Discovery guide
-├── 02-import.md              # Phase 2: Import guide
-├── 03-migrate.md             # Phase 3: TFE migration guide
-└── azure-01-search.md        # Azure Phase 1: Discovery guide
+├── 01-search.md              # How to use Search & Import with AWS
+├── azure-01-search.md        # How to use Search & Import with Azure
+├── 02-import.md              # How to import discovered resources
+└── 03-migrate.md             # How to migrate workspaces to TFE
 
 terraform/
 ├── aws/
 │   ├── deployment/           # Deploy EC2 instance (AWS demo)
-│   └── discovery/            # AWS discovery & import config
+│   └── discovery/            # AWS discovery config (54 resource types)
 ├── azurerm/
 │   ├── deployment/           # Deploy Resource Group + Public IP (Azure demo)
-│   └── discovery/            # Azure discovery config (28 resource types)
+│   └── discovery/            # Azure discovery config (39 resource types)
+├── google/
+│   └── discovery/            # GCP discovery config (1 resource type, growing)
 └── hcp-terraform/            # Create HCP Terraform workspace (multi-cloud)
 ```
 
@@ -247,4 +262,5 @@ terraform/
 - [TFM Migration Tool](https://github.com/hashicorp-services/tfm)
 - [AWS Provider CHANGELOG](https://github.com/hashicorp/terraform-provider-aws/blob/main/CHANGELOG.md)
 - [AzureRM Provider CHANGELOG](https://github.com/hashicorp/terraform-provider-azurerm/blob/main/CHANGELOG.md)
+- [Google Provider CHANGELOG](https://github.com/hashicorp/terraform-provider-google/blob/main/CHANGELOG.md)
 - [Terraform Downloads](https://developer.hashicorp.com/terraform/downloads)
