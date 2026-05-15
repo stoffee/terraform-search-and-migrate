@@ -31,9 +31,9 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 
 | Provider | Status | Demo Resources |
 |----------|--------|---------------|
-| AWS (`hashicorp/aws` 6.37+) | ✅ Full support | EC2 instance discovery |
-| Azure (`hashicorp/azurerm` 4.64+) | ✅ Growing support | Resource Group + Public IP discovery |
-| GCP (`hashicorp/google`) | ❌ Not yet supported | — |
+| AWS (`hashicorp/aws` 6.45+) | ✅ Full support | EC2 instance discovery |
+| Azure (`hashicorp/azurerm` 4.73+) | ✅ Growing support | Resource Group + Public IP discovery |
+| GCP (`hashicorp/google` 7.29+) | ⚠️ Early support | Service Account discovery |
 
 **AWS Resources** (as of Provider 6.37+):
 - Compute: `aws_instance`, `aws_lambda_function`, `aws_lambda_permission`
