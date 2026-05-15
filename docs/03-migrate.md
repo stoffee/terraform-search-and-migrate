@@ -199,7 +199,7 @@ Planning to migrate workspace:
     - Terraform Version: 1.14.0-rc2
     - Execution Mode: remote
     - VCS Repo: stoffee/tfc-search-2-tfe
-    - Working Directory: terraform/aws-ec2/discovery/
+    - Working Directory: terraform/aws/discovery/
 
   State:
     - Resources: 1 (aws_instance.all_0)
@@ -228,7 +228,7 @@ Type `yes` to proceed.
    - ✅ Terraform version: 1.14.0-rc2
    - ✅ Execution mode: remote
    - ✅ VCS connected: stoffee/tfc-search-2-tfe
-   - ✅ Working directory: terraform/aws-ec2/discovery/
+   - ✅ Working directory: terraform/aws/discovery/
 
 3. **Verify State**:
    - Click "States" tab
@@ -242,7 +242,7 @@ Type `yes` to proceed.
 
 ```bash
 # Update your local backend config to point to TFE
-cd terraform/aws-ec2/discovery
+cd terraform/aws/discovery
 
 # Edit versions.tf or create a new cloud config
 cat > tfe-backend.tf << 'EOF'

@@ -7,7 +7,7 @@ This directory contains the Search & Import configuration to discover our simple
 **Prerequisites**:
 1. EC2 instance deployed (from `../deployment/`)
 2. HCP Terraform workspace `resource-discovery` exists
-3. Workspace connected to this repo with working directory: `terraform/aws-ec2/discovery`
+3. Workspace connected to this repo with working directory: `terraform/aws/discovery`
 4. AWS credentials set as workspace environment variables
 
 ## What to Expect

@@ -60,3 +60,6 @@ temp/
 pre-migration-state.json
 hcp-state.tfstate
 deployed-resources.json
+
+# Bob-Shell
+.bob/

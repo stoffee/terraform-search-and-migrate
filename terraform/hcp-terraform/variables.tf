@@ -30,9 +30,9 @@ variable "workspace_description" {
 }
 
 variable "terraform_version" {
-  description = "Terraform version to use (must be 1.14.0-rc2 or newer for search)"
+  description = "Terraform version to use (must be 1.14.0 or newer for Search & Import)"
   type        = string
-  default     = "1.14.0-rc2"
+  default     = "1.14.0"
 
   validation {
     condition     = can(regex("^1\\.(1[4-9]|[2-9][0-9])\\..*", var.terraform_version))

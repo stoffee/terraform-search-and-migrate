@@ -71,7 +71,7 @@ resource "aws_instance" "all_0" {
 Navigate to the discovery directory and create the generated config file:
 
 ```bash
-cd terraform/aws-ec2/discovery
+cd terraform/aws/discovery
 
 # Create generated.tf and paste the copied code
 # Use your preferred editor (vi, nano, code, etc.)
@@ -187,7 +187,7 @@ git push origin main
 If you want to verify locally:
 
 ```bash
-cd terraform/aws-ec2/discovery
+cd terraform/aws/discovery
 
 # Configure backend to point to HCP Terraform
 # (This is already configured in versions.tf)
@@ -265,4 +265,4 @@ Proceed to [Phase 3: Migrate to Terraform Enterprise](03-migrate.md) to:
 - [HCP Terraform Search & Import Docs](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/import)
 - [Import Block Syntax](https://developer.hashicorp.com/terraform/language/import)
 - [AWS Provider - Instance Resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
-- [Discovery README](../terraform/aws-ec2/discovery/README.md) - Complete cleanup attribute list
+- [Discovery README](../terraform/aws/discovery/README.md) - Complete cleanup attribute list

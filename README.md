@@ -17,7 +17,7 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 ## Prerequisites
 
 **Required Access**:
-- AWS account (EC2 permissions)
+- AWS account (EC2 permissions) **and/or** Azure subscription (Contributor role)
 - HCP Terraform account (app.terraform.io)
 - Terraform Enterprise instance
 - GitHub account
@@ -25,16 +25,27 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 **Required Tools**:
 - Git
 - Go 1.19+ (for Phase 3)
+- Terraform 1.14.0+
 
-**Supported AWS Resources** (as of Provider 6.29+):
-- Compute: `aws_instance`
-- Networking: `aws_vpc`, `aws_subnet`, `aws_security_group`
-- IAM: `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy_attachment`
-- Storage: `aws_s3_bucket`
-- KMS: `aws_kms_key`, `aws_kms_alias`
-- Messaging: `aws_sqs_queue`
-- SSM: `aws_ssm_parameter`
+**Supported Cloud Providers**:
+
+| Provider | Status | Demo Resources |
+|----------|--------|---------------|
+| AWS (`hashicorp/aws` 6.37+) | ✅ Full support | EC2 instance discovery |
+| Azure (`hashicorp/azurerm` 4.64+) | ✅ Growing support | Resource Group + Public IP discovery |
+| GCP (`hashicorp/google`) | ❌ Not yet supported | — |
+
+**AWS Resources** (as of Provider 6.37+):
+- Compute: `aws_instance`, `aws_lambda_function`, `aws_lambda_permission`
+- Networking: `aws_vpc`, `aws_subnet`, `aws_security_group`, `aws_lb`, `aws_lb_listener`, `aws_route`, `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule`
+- IAM: `aws_iam_role`, `aws_iam_user`, `aws_iam_policy`
+- Storage: `aws_s3_bucket`, `aws_s3_directory_bucket`, `aws_s3_bucket_versioning`
+- Secrets: `aws_secretsmanager_secret`
+- Messaging: `aws_sns_topic`, `aws_sqs_queue`
 - Monitoring: `aws_cloudwatch_log_group`
+
+**Azure Resources** (as of AzureRM 4.64+): 28 confirmed types including Resource Groups, Public IPs, App Gateways, Firewalls, Azure SQL, Redis, and more.
+- See: [docs/azure-01-search.md](docs/azure-01-search.md)
 
 ---
 
@@ -43,7 +54,7 @@ Complete workflow for discovering cloud resources, importing to Terraform state,
 ### Step 1: Deploy EC2 Instance
 
 ```bash
-cd terraform/aws-ec2/deployment
+cd terraform/aws/deployment
 terraform init
 terraform plan
 terraform apply
@@ -80,7 +91,7 @@ Go to workspace → Variables → Add environment variables:
 ### Step 4: Run Search & Import
 
 ```bash
-cd ../aws-ec2/discovery
+cd ../aws/discovery
 git push origin main  # Triggers workspace run
 ```
 
@@ -102,7 +113,7 @@ In Search & Import UI:
 ### Step 2: Save Generated Config
 
 ```bash
-cd terraform/aws-ec2/discovery
+cd terraform/aws/discovery
 vi generated.tf
 # Paste copied code
 ```
@@ -187,7 +198,7 @@ Type `yes` when prompted.
 Go to TFE workspace → States → Verify `aws_instance.all_0` exists.
 
 ```bash
-cd terraform/aws-ec2/discovery
+cd terraform/aws/discovery
 
 # Update backend to point to TFE
 cat > tfe-backend.tf << 'EOF'
@@ -214,13 +225,13 @@ terraform plan        # Should show no changes
 
 ### Phase 1: No Resources Found
 ```bash
-cd terraform/aws-ec2/deployment
+cd terraform/aws/deployment
 terraform output instance_id  # Verify instance exists
 ```
 
 ### Phase 2: Plan Shows Conflicts
 - Verify you removed ALL 9 conflicting attributes
-- Check `terraform/aws-ec2/discovery/README.md` for complete list
+- Check `terraform/aws/discovery/README.md` for complete list
 
 ### Phase 3: VCS Not Connected
 - Verify OAuth mapping in `~/.tfm.hcl`
@@ -231,13 +242,20 @@ terraform output instance_id  # Verify instance exists
 ## Project Structure
 
 ```
+docs/
+├── 01-search.md              # AWS Phase 1: Discovery guide
+├── 02-import.md              # Phase 2: Import guide
+├── 03-migrate.md             # Phase 3: TFE migration guide
+└── azure-01-search.md        # Azure Phase 1: Discovery guide
+
 terraform/
-├── aws-ec2/
-│   ├── deployment/           # Phase 1: Deploy EC2
-│   └── discovery/            # Phase 1-2: Discovery & Import
-│       ├── discovery.tfquery.hcl
-│       └── generated.tf
-└── hcp-terraform/            # Phase 1: Create workspace
+├── aws/
+│   ├── deployment/           # Deploy EC2 instance (AWS demo)
+│   └── discovery/            # AWS discovery & import config
+├── azurerm/
+│   ├── deployment/           # Deploy Resource Group + Public IP (Azure demo)
+│   └── discovery/            # Azure discovery config (28 resource types)
+└── hcp-terraform/            # Create HCP Terraform workspace (multi-cloud)
 ```
 
 ---
@@ -246,4 +264,6 @@ terraform/
 
 - [HCP Terraform Search & Import](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/import)
 - [TFM Migration Tool](https://github.com/hashicorp-services/tfm)
-- [Terraform 1.14.0-rc2](https://releases.hashicorp.com/terraform/1.14.0-rc2/)
+- [AWS Provider CHANGELOG](https://github.com/hashicorp/terraform-provider-aws/blob/main/CHANGELOG.md)
+- [AzureRM Provider CHANGELOG](https://github.com/hashicorp/terraform-provider-azurerm/blob/main/CHANGELOG.md)
+- [Terraform Downloads](https://developer.hashicorp.com/terraform/downloads)

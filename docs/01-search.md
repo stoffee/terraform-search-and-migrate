@@ -33,7 +33,8 @@ Step-by-step guide for discovering unmanaged infrastructure using HCP Terraform'
 - GitHub account with this repository forked/cloned
 
 ### Required Versions
-- Terraform 1.14.0-rc2 or newer (for Search & Import feature)
+- Terraform 1.14.0 or newer (for Search & Import feature)
+- AWS Provider 6.0.0 or later
 
 ---
 
@@ -42,7 +43,7 @@ Step-by-step guide for discovering unmanaged infrastructure using HCP Terraform'
 Navigate to the deployment directory and deploy the infrastructure:
 
 ```bash
-cd terraform/aws-ec2/deployment
+cd terraform/aws/deployment
 
 # Initialize Terraform
 terraform init
@@ -86,13 +87,13 @@ tfe_organization = "your-org-name"
 workspace_name = "resource-discovery"
 
 # Terraform version
-terraform_version = "1.14.0-rc2"
+terraform_version = "1.14.0"
 
 # VCS connection
 vcs_repo_identifier = "your-github-username/tfc-search-2-tfe"
 vcs_oauth_token_id  = "ot-YOUR_OAUTH_TOKEN_ID"  # Get from HCP Terraform VCS settings
 vcs_branch          = "main"
-working_directory   = "terraform/aws-ec2/discovery/"
+working_directory   = "terraform/aws/discovery/"
 ```
 
 **Create the workspace**:
@@ -128,7 +129,7 @@ Add your AWS credentials as **environment variables** in the HCP Terraform works
 ## Step 4: Configure Discovery Query
 
 The discovery query is already configured in:
-**File**: `terraform/aws-ec2/discovery/discovery.tfquery.hcl`
+**File**: `terraform/aws/discovery/discovery.tfquery.hcl`
 
 ```hcl
 # Discovery configuration for HCP Terraform Search & Import
@@ -152,7 +153,7 @@ This tells HCP Terraform to search for all EC2 instances in your AWS account.
 Commit and push to trigger the workspace (or manually queue a run):
 
 ```bash
-cd ../aws-ec2/discovery
+cd ../aws/discovery
 
 # Ensure discovery.tfquery.hcl is committed
 git add discovery.tfquery.hcl
@@ -211,7 +212,7 @@ Proceed to [Phase 2: Import Resources](02-import.md) to:
 ## Directory Structure
 
 ```
-terraform/aws-ec2/
+terraform/aws/
 ├── deployment/           # ← Step 1: Deploy EC2 instance
 │   ├── main.tf
 │   ├── outputs.tf
@@ -230,19 +231,18 @@ terraform/hcp-terraform/  # ← Step 2: Create workspace
 
 ---
 
-## Beta Limitations
+## Supported Resource Types
 
-**Only 3 AWS resource types supported**:
+As of AWS Provider 6.x, many resource types support list blocks for Search & Import. Key examples used in this demo:
+
 - ✅ `aws_instance` (EC2)
-- ✅ `aws_iam_role`
+- ✅ `aws_iam_role` / `aws_iam_user`
 - ✅ `aws_cloudwatch_log_group`
+- ✅ `aws_vpc`, `aws_subnet`, `aws_security_group`
+- ✅ `aws_s3_bucket`, `aws_lb`, `aws_lambda_function`
+- ✅ And many more (30+ resource types as of v6.37.0)
 
-**Not supported**:
-- ❌ `aws_vpc`
-- ❌ `aws_subnet`
-- ❌ Most other AWS resources
-
-This is a beta feature - more resource types will be added in future releases.
+See [SUPPORTED_RESOURCES.md](https://github.com/hashicorp/terraform-provider-aws/blob/main/CHANGELOG.md) or the AWS provider CHANGELOG for the full current list.
 
 ---
 

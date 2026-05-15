@@ -1,0 +1,7 @@
+# Copy this file to terraform.tfvars and edit as needed
+# cp terraform.tfvars.example terraform.tfvars
+
+location            = "West US 2"
+resource_group_name = "search-import-demo-rg"
+environment         = "demo"
+project_name        = "tfc-search-import-demo"
